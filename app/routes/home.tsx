@@ -1,13 +1,18 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
-
+import TopBar from "./topbar"
+import { Add }from "./add";
+import { CardSmall } from "./workcomp"
 export default function Home() {
-  return <Welcome />;
+  return (
+    <>
+    <div className="bg-taupe-300 min-h-screen">
+      <TopBar />
+      <Add />
+      <CardSmall />
+      
+      
+    </div>
+    </>
+    
+  );
 }
