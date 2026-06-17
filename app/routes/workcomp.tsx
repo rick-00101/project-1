@@ -1,4 +1,5 @@
-import { Button } from "../components/ui/button"
+import { Button } from "../components/ui/button";
+import {useState} from "react";
 import {
   Card,
   CardContent,
@@ -8,26 +9,50 @@ import {
   CardTitle,
 } from "../components/ui/card"
 
-export function CardSmall() {
+interface cardprop{
+  work : string
+  destroyer : ()=> void
+}
+
+
+
+
+export function CardSmall( prop : cardprop) {
+
+  const [visible ,setVisible] = useState(true)
+
+
+  
+   
   return (
-    <Card size="sm" className="mx-auto bg-taupe-400 mt-6 w-full max-w-sm">
+    <>
+    {
+      visible && (
+        <div>
+      <Card size="sm" className="mx-auto bg-taupe-400 mt-6 w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Small Card</CardTitle>
-        <CardDescription>
-          This card uses the small size variant.
-        </CardDescription>
+       
+        
       </CardHeader>
       <CardContent>
         <p>
-          The card component supports a size prop that can be set to
-          for a more compact appearance.
+          { prop.work}
+          
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" size="sm" className="w-full">
+        <Button   onClick ={prop.destroyer}   variant="outline" size="sm" className="w-full">
           Done
         </Button>
       </CardFooter>
     </Card>
+    </div>
+      )
+      
+    }
+   
+    </>
+   
+    
   )
 }
