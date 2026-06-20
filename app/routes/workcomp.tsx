@@ -1,5 +1,6 @@
 import { Button } from "../components/ui/button";
-import {useState} from "react";
+
+
 import {
   Card,
   CardContent,
@@ -9,9 +10,20 @@ import {
   CardTitle,
 } from "../components/ui/card"
 
+ type Task ={
+    work : string ,
+    status : "completed" | "pending"
+  }
+
 interface cardprop{
-  work : string
-  destroyer : ()=> void
+  work : Task
+  destroyer : (index:number)=>void,
+  
+  
+  index : number,
+ 
+  
+
 }
 
 
@@ -19,7 +31,12 @@ interface cardprop{
 
 export function CardSmall( prop : cardprop) {
 
-  const [visible ,setVisible] = useState(true)
+
+
+
+
+
+
 
 
   
@@ -27,21 +44,23 @@ export function CardSmall( prop : cardprop) {
   return (
     <>
     {
-      visible && (
+       (
         <div>
       <Card size="sm" className="mx-auto bg-taupe-400 mt-6 w-full max-w-sm">
       <CardHeader>
-       
+        <CardTitle>Task {prop.index + 1}</CardTitle>
         
       </CardHeader>
-      <CardContent>
-        <p>
-          { prop.work}
+      <CardContent >
+        <p className={prop.work.status=="completed" ? " line-through opacity-50" : ""} >
+          { prop.work.work  }
+          
+          
           
         </p>
       </CardContent>
       <CardFooter>
-        <Button   onClick ={prop.destroyer}   variant="outline" size="sm" className="w-full">
+        <Button   onClick ={()=>prop.destroyer(prop.index)}    variant="outline" size="sm" className="w-full">
           Done
         </Button>
       </CardFooter>
