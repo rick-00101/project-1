@@ -2,16 +2,21 @@ import { Button } from "../components/ui/button";
 import { Field } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { CardSmall } from "./workcomp";
-import { useState } from "react";
+import { useState  ,useEffect} from "react";
+
 
 export function Add() {
   type Task ={
+    id : string
     work : string ,
     status : "completed" | "pending"
   }
+  
   const [value, setValue] = useState("");
 
   const [task, setTask] = useState<Task[]>([]);
+
+ 
  
   
   const isEmpty = value.length === 0;
@@ -28,13 +33,43 @@ export function Add() {
 
     
   }
-  
+
+  function edittask( editval : string , id : string ){
+   setTask(
+    task.map(
+      (t)=>(t.id == id ) ? {...t  , work: editval }: t
+    )
+   )
+
+  }
+
+
+  function deletetask(id : string){
+
+    setTask(task.filter(
+      t=> t.id == id ?  t.work="" : t 
+      
+    ))
+
+  }
 
  
+
+  useEffect(()=>{
+    const tasks = JSON.stringify(task)
+
+    const saved = localStorage.getItem(tasks);
+
+    if(saved){
+      setTask(JSON.parse(saved))
+    }
+
+  },[task])
   
 
   function addtask() {
     setTask([...task ,   {
+    id : crypto.randomUUID(),
     work: value,
     status: "pending",
   },]);
@@ -71,14 +106,18 @@ export function Add() {
       </div>
       {task.length>0 && (
         <div>
-          {task.map((task, index: number) => {
+          {task.map((singletask, index: number) => {
             return (
               <div key={index}>
                 <CardSmall
+                
+                  id ={singletask.id}
                   
                   destroyer={destroyer}
+                  edittask={edittask}
+                  deletetask={deletetask}
                  
-                  work={task}
+                  work={singletask}
                   index ={index}
                   
                   
