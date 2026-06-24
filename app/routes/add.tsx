@@ -15,6 +15,8 @@ export function Add() {
   const [value, setValue] = useState("");
 
   const [task, setTask] = useState<Task[]>([]);
+  
+  
 
  
  
@@ -55,19 +57,13 @@ export function Add() {
 
  
 
-  useEffect(()=>{
-    const tasks = JSON.stringify(task)
+ 
 
-    const saved = localStorage.getItem(tasks);
-
-    if(saved){
-      setTask(JSON.parse(saved))
-    }
-
-  },[task])
-  
 
   function addtask() {
+
+
+
     setTask([...task ,   {
     id : crypto.randomUUID(),
     work: value,
@@ -77,13 +73,22 @@ export function Add() {
     console.log("Task added:", value);
   }
 
+  useEffect(() => {
+  const saved = localStorage.getItem("tasks");
+  if (saved) setTask(JSON.parse(saved));
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("tasks", JSON.stringify(task));
+}, [task]);
+
   return (
     <>
       <div className="flex flex-col justify-center  items-center h-[] mt-10">
         <Field orientation="horizontal" className="w-1/2  ">
           <Input
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => setValue(e.target.value) }
             type="search"
             placeholder="Add task..."
           />
@@ -100,6 +105,7 @@ export function Add() {
           >
             ADD
           </Button>
+         
         </Field>
 
         <p className="mt-10 text-4xl text-gray-500">MY daily task</p>
@@ -119,6 +125,7 @@ export function Add() {
                  
                   work={singletask}
                   index ={index}
+                  
                   
                   
                   

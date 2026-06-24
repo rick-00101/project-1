@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import {useState} from 'react';
 import {
   InputGroup,
   InputGroupAddon,

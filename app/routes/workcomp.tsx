@@ -23,6 +23,7 @@ interface cardprop {
   destroyer: (index: number) => void;
   edittask : ( editval  : string , id : string)=>void,
   deletetask : (id : string)=>void,
+  
   id : string
  
 
