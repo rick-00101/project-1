@@ -4,8 +4,10 @@ import { Input } from "../components/ui/input";
 import { CardSmall } from "./workcomp";
 import { useState  ,useEffect} from "react";
 
-
-export function Add() {
+type addprop = {
+  searchQuery : string
+}
+export function Add( prop : addprop ) {
   type Task ={
     id : string
     work : string ,

@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import {useState} from 'react';
+import {useState, type SetStateAction} from 'react';
 import {
   InputGroup,
   InputGroupAddon,
@@ -9,7 +9,15 @@ import {
   InputGroupTextarea,
 } from "../components/ui/input-group";
 import {Link} from "react-router"
-export default function Topbar() {
+type topprop =  {
+  searchQuery : string,
+  setsearchQuery : React.Dispatch<SetStateAction<string>>
+}
+export default function Topbar( 
+
+  prop : topprop
+  
+) {
   return (
     <>
       <div className="flex w-full h-15 justify-end items-center p-2 ">
@@ -22,7 +30,7 @@ export default function Topbar() {
         </div>
         <div className="mr-8">
           <InputGroup className="w-[300px]">
-            <InputGroupInput placeholder="Search..." />
+            <InputGroupInput  value={prop.searchQuery} onChange={(e)=>{prop.setsearchQuery(e.target.value)}} placeholder="Search..." />
             <InputGroupAddon></InputGroupAddon>
           </InputGroup>
         </div>
