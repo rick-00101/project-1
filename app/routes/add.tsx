@@ -25,6 +25,8 @@ export function Add( prop : addprop ) {
   
   const isEmpty = value.length === 0;
 
+  const filterredTask =task.filter(
+    (t)=> t.work.toLowerCase().includes(prop.searchQuery.toLowerCase()))
     function destroyer( index:number) {
 
       setTask(task.map((task , i)=>
@@ -112,11 +114,11 @@ useEffect(() => {
 
         <p className="mt-10 text-4xl text-gray-500">MY daily task</p>
       </div>
-      {task.length>0 && (
+      {filterredTask.length>0 ? (
         <div>
-          {task.map((singletask, index: number) => {
+          {filterredTask.map((singletask, index: number) => {
             return (
-              <div key={index}>
+              <div key={singletask.id}>
                 <CardSmall
                 
                   id ={singletask.id}
@@ -136,6 +138,12 @@ useEffect(() => {
             );
           })}
         </div>
+      ) : 
+      (
+        prop.searchQuery && (
+          <p className="text-center text-gray-400 text-sm mt-10">
+            No tasks match "{prop.searchQuery}" 🔍
+          </p>)
       )}
     </>
   );
