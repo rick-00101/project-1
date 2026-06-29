@@ -4,12 +4,21 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "./dist",
-    "rootDir": "./src",
+    
+   
+    
     "ignoreDeprecations": "6.0",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"]
+  "include": [
+
+    "src/**/*",        // 💡 Tumhara code yahan safe rahega
+    "generated/**/*"
+    
+    
+  ]
+   
 }

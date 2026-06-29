@@ -1,5 +1,5 @@
 import {Redis} from '@upstash/redis';
-
+import 'dotenv/config';
 // initialzed redis client
 export const redis = new Redis({
     url : process.env.UPSTASH_REDIS_REST_URL ,
@@ -42,7 +42,7 @@ export const redisSession ={
 
     async delSession(sessionId : string) {
 
-        const key =`sessionId:${sessionId}`;
+        const key = `session:${sessionId}`;
          await redis.del(key)
 
     }
