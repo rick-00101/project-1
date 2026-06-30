@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import {prisma} from "../utils/prisma";
 import crypto from 'crypto';
 import { redisSession } from "../config/redis";
@@ -52,13 +52,6 @@ export const googleAuthHandler= async ( req : Request , res :Response)=>{
         email: user.email,
       },
     });
-
-
-
-
- 
-
-        
      }catch(error){
         console.error("Google Auth Controller Error:", error);
     return res.status(500).json({ error: "Internal Server Error during authentication" });
@@ -67,3 +60,25 @@ export const googleAuthHandler= async ( req : Request , res :Response)=>{
    
 
 }
+
+export const logoutHandler = async (req: Request, res: Response) => {
+  try {
+    const sessionId = req.cookies?.sessionId;
+
+    if (sessionId) {
+      await redisSession.delSession(sessionId);
+    }
+
+    res.clearCookie("sessionId", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout Controller Error:", error);
+    return res.status(500).json({ error: "Internal Server Error during logout" });
+  }
+};
+
