@@ -11,7 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(cors()); // Isse Frontend bina CORS error ke baat kar payega
+app.use(cors({
+   origin: "http://localhost:5173",
+   credentials: true, 
+})); // Isse Frontend bina CORS error ke baat kar payega
 app.use(express.json()); // Isse server JSON data ko samajh payega
 app.use(cookieParser());
 
