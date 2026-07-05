@@ -1,16 +1,27 @@
-import { useEffect, useState } from "react";
-import { useNavigate , useLocation } from "react-router";
+import { useEffect, useState, createContext, useContext } from "react";
+import { useNavigate, useLocation, Navigate } from "react-router"; // 👈 Navigate component bhi le aaya redirection ke liye
 import axios from "axios";
-export  default function AuthContext({ children }: { children: React.ReactNode }) {
-    
-    type user= {
-        email : string ; 
-        userId  : string
-    }
-  const [user, setuser] = useState<user>() ;
-  const [isLoading, setIsLoading] = useState(true); // ⏳ Loading state zaroori hai
-  const Navigate=useNavigate();
+
+// 📝 1. Type ko upar rakh diya clearity ke liye
+type UserType = {
+  email: string;
+  userId: string;
+};
+
+// 🎯 2. GLOBAL SCOPE: Context ko function se BAAHAR nikal diya!
+// Ab ise useAuth aur AuthContext dono aaram se dekh sakte hain.
+const UserContext = createContext<{
+  user: UserType | null;
+  setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
+} | null>(null);
+
+
+export default function AuthContext({ children }: { children: React.ReactNode }) {
+  // State ka naam setUser (Capital U) kar diya taaki context match kare
+  const [user, setUser] = useState<UserType | null>(null); 
+  const [isLoading, setIsLoading] = useState(true); 
   const location = useLocation();
+
   useEffect(() => {
     const checkFunction = async () => {
       try {
@@ -19,39 +30,45 @@ export  default function AuthContext({ children }: { children: React.ReactNode }
           url: "http://localhost:5000/api/auth/v1/me",
           withCredentials: true,
         });
-        if(response.data && response.data.user){
-            setuser(response.data.user)
+        if (response.data && response.data.user) {
+          setUser(response.data.user);
         }
       } catch {
-        console.log("not loogin");
-      }finally {
-        setIsLoading(false); // Check khatam, loading band!
+        console.log("not logged in");
+      } finally {
+        setIsLoading(false); 
       }
-      
     };
-    checkFunction()
+    checkFunction();
   }, []);
+
   if (isLoading) {
     return <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">Loading system...</div>;
   }
 
-  // 2. 🛡️ PROTECTION LOGIC (Tala)
-  const isLoginPage = location.pathname === "/"; // Maan lete hain tumhara login root '/' par hai
+  // 🛡️ PROTECTION LOGIC (Tala)
+  const isLoginPage = location.pathname === "/"; 
 
-  // Case A: User logged in HAI, par woh firse login page par jaane ki koshish kar raha hai
-  if (user && isLoginPage) {
-    return Navigate("/app"); // Dhakka maar kar dashboard par bhejo
+  // 🚨 RE-RENDER TRAP SE BACHNE KE LIYE: Yahan component <Navigate /> return karenge, function wala Navigate nahi!
+  if (user && isLoginPage) { 
+    return <Navigate to="/app" replace />; 
   }
 
-  // Case B: User logged in NAHI hai, par woh andar ke pages (/app) kholne ki koshish kar raha hai
   if (!user && !isLoginPage) {
-    return Navigate("/"); // Dhakka maar kar wapas login screen par feko
+    return <Navigate to="/" replace />; 
   }
 
-  // Case C: Sab sahi hai, rasta saaf hai!
-  return <>{children}</>;
-  
+  // Case C: Sab sahi hai, Provider me values pass karke children render karo
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
 
-  
-  
+// 👑 3. Ab yeh hook bina kisi error ke chalega kyunki UserContext ab iske scope me hai!
+export function useAuth() {
+  const context = useContext(UserContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
 }

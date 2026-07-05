@@ -1,5 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
+import { useAuth } from "./authContext";
 import axios from 'axios';
 import {
   Card,
@@ -9,10 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card"
+import { useContext } from "react";
 
 
 export default function LoginPage() {
+  const {setUser} = useAuth()
   const navigtae = useNavigate()
+  
 
   const handleGoogleSuccess = async  (credentialResponse: any) => {
     console.log("🔥 BOOM! Google se full response mila:", credentialResponse);
@@ -42,6 +46,7 @@ export default function LoginPage() {
     })
     console.log(response.data)
     if(response.status=== 200 ){
+      setUser(response.data.user);
       navigtae("/app")
     }
 
