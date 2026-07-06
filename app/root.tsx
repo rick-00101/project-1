@@ -34,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="">
         <GoogleOAuthProvider clientId={clientId}>
           <AuthContext >{children}</AuthContext>
         </GoogleOAuthProvider>

@@ -91,6 +91,7 @@ useEffect(() => {
       <div className="flex flex-col justify-center  items-center h-[] mt-10">
         <Field orientation="horizontal" className="w-1/2  ">
           <Input
+          className=""
             value={value}
             onChange={(e) => setValue(e.target.value) }
             type="search"

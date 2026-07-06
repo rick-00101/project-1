@@ -1,10 +1,12 @@
 import type { Route } from "./+types/home";
 import TopBar from "./topbar"
 import { Add } from "./add";
+import { useNavigate, } from "react-router";
 import { useState } from 'react';
 
 export default function Home() {
   const [searchQuery, setsearchQuery] = useState('');
+  const navigation=useNavigate();
 
   return (
     <>
@@ -20,8 +22,8 @@ export default function Home() {
           <aside className="col-span-2 bg-white/40 border border-black/10 rounded-xl p-4 min-h-[80vh]">
             <h2 className="font-bold text-sm text-slate-800 mb-4">NAVIGATION</h2>
             <ul className="flex flex-col gap-2 text-sm text-slate-700">
-              <li className="cursor-pointer hover:font-bold">🏠 Dashboard</li>
-              <li className="cursor-pointer hover:font-bold">👥 Custom Rooms</li>
+              <li className="cursor-pointer hover:font-bold" onClick={()=>navigation("/app")}>🏠 Dashboard</li>
+              <li className="cursor-pointer hover:font-bold" onClick={()=>navigation("/custom")}>👥 Custom Rooms</li>
             </ul>
           </aside>
 

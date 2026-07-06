@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { type SetStateAction } from 'react';
-import { useNavigate, useLocation } from "react-router"; // 👈 useNavigate sahi hook le aaya
+import {  type SetStateAction } from 'react';
+import { useNavigate} from "react-router"; // 👈 useNavigate sahi hook le aaya
 import axios from "axios";
 import { useAuth } from "./authContext";
 import {
@@ -18,6 +18,7 @@ type Topprop = {
 export default function Topbar(prop: Topprop) {
   // 🎯 STEP 1: Saare hooks ko component ke andar bitha diya (Rule Fixed!)
   const navigate = useNavigate(); 
+  
   const { user, setUser } = useAuth(); // User ka data bhi nikal liya taaki dynamic name dikhe
 
   // 🎯 STEP 2: Logout function ko bhi component ke andar le aaye
