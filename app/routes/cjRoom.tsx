@@ -18,7 +18,8 @@ export default function CjRoom() {
   const handleCreate =()=>{
     const rId = crypto.randomUUID().slice(0,8).trim();
     setroomId(rId);
-    navigate(`/custom/roomId:${rId}`)
+    navigate(`/custom/${rId}`)
+    return rId;
 
 
   }
@@ -38,13 +39,16 @@ export default function CjRoom() {
       <CardContent>
         <input className="w-full rounded outline-2" 
         type="text"
-        onChange={(e)=>setroomId(e.target.value)}
         value={roomId}
+        onChange={(e)=>setroomId(e.target.value)}
+        onClick={() => roomId.trim() && navigate(`/custom/${roomId}`)}        
         />
         
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button variant="outline" size="sm" className="w-full">
+        <Button variant="outline" size="sm" className="w-full"
+
+        onClick={()=>navigate(`/custom/roomId:${handleCreate}`)}>  
           JOIN
         </Button>
         <Button  size="sm" className="w-full"
