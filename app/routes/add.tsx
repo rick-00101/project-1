@@ -2,12 +2,13 @@ import { Button } from "../components/ui/button";
 import { Field } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { CardSmall } from "./workcomp";
+import axios from 'axios';
 import { useState  ,useEffect} from "react";
 
 type addprop = {
   searchQuery : string
 }
-export function Add( prop : addprop ) {
+export  function Add( prop : addprop ) {
   type Task ={
     id : string
     work : string ,
@@ -16,7 +17,14 @@ export function Add( prop : addprop ) {
   
   const [value, setValue] = useState("");
 
-  const [task, setTask] = useState<Task[]>([]);
+  const [task, setTask] = useState<Task[]>(() => {
+  const saved = localStorage.getItem("tasks");
+  return saved ? JSON.parse(saved) : []; // Pehle hi localstorage check kar liya!
+});;
+
+  
+
+  
   
   
 
@@ -64,7 +72,7 @@ export function Add( prop : addprop ) {
  
 
 
-  function addtask() {
+  async function addtask() {
 
 
 
@@ -75,13 +83,14 @@ export function Add( prop : addprop ) {
   },]);
     setValue("");
     console.log("Task added:", value);
+
+    
+
+
+    
   }
 
-  useEffect(() => {
-  const saved = localStorage.getItem("tasks");
-  if (saved) setTask(JSON.parse(saved));
-}, []);
-
+ 
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(task));
 }, [task]);

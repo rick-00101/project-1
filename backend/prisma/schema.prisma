@@ -33,6 +33,8 @@ model user_items {
 
   createdAT DateTime @default(now())
 
+  roomId String
+
   user_id String
   
   user user_details @relation( fields : [user_id] , references: [user_id] , onDelete: Cascade)
@@ -40,13 +42,13 @@ model user_items {
 
   title String 
    
-   content String 
+  content String 
 
-   type String 
+  type String 
 
-   status String
+  status String
 
-   thumbnailURl String?
+  thumbnailURl String?
    
   
 
