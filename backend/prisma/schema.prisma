@@ -40,11 +40,11 @@ model user_items {
   user user_details @relation( fields : [user_id] , references: [user_id] , onDelete: Cascade)
 
 
-  title String 
+  title String @default("canvastask")
    
   content String 
 
-  type String 
+  type String  @default("canvas-card")
 
   status String
 

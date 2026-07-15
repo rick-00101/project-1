@@ -32,7 +32,7 @@ interface cardprop {
 
 export function CardSmall(prop: cardprop) {
    const [edit , setedit] = useState(false)
-   const [editval , seteditval ] = useState("")
+   const [editval , seteditval ] = useState(prop.work.work)
   return (
     <>
       {

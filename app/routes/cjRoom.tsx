@@ -48,7 +48,7 @@ export default function CjRoom() {
       <CardFooter className="flex-col gap-2">
         <Button variant="outline" size="sm" className="w-full"
 
-        onClick={()=>navigate(`/custom/roomId:${handleCreate}`)}>  
+        onClick={()=>roomId.trim() && navigate(`/custom/${roomId}`)}>  
           JOIN
         </Button>
         <Button  size="sm" className="w-full"

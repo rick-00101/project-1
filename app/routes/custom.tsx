@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
+import axios from 'axios';
 import { io , Socket   } from "socket.io-client";
 
 export default function Customroom() {
@@ -33,8 +34,18 @@ export default function Customroom() {
       setTask((prev)=> [...prev , data])
     })
 
+    socketRef.current?.on("task-delete" , ({todoId } : {todoId : string})=>{
+
+      // have to render task that are != todoId
+      console.log("Delete signal received for:", todoId);
+      setTask((prevTask) => prevTask.filter((t) => t.todoId !== todoId));
+      
+
+    })
+
      return () => {
       socketRef.current?.off("recieve");
+      socketRef.current?.off("task-delete");
       socketRef.current?.disconnect();
       socketRef.current = null;
     };
@@ -45,15 +56,21 @@ export default function Customroom() {
   function wipeoff(todoId: string) {
     const filteredTask = task.filter((t) => t.todoId != todoId);
     setTask(filteredTask);
+    socketRef.current?.emit("task-delete", { roomId, todoId });
+
+    
   }
  
 
-  function addTask(value: string) {
+  async function  addTask(value: string) {
+    
+    const generatedID=crypto.randomUUID()
 
     const newTask ={
       work : value ,
       roomId: roomId || "",
-      todoId: crypto.randomUUID(),
+      
+      todoId: generatedID,
       state: false,
 
     }
@@ -61,6 +78,21 @@ export default function Customroom() {
   
     
     setTask(prev =>[...prev , newTask])
+
+     await axios.post(
+      "http://localhost:5000/api/task/workadd",{
+
+        roomId : roomId,
+        todoid : generatedID,
+        content : value,
+
+
+      
+
+    },{
+      withCredentials:true
+    }
+  )
 
     socketRef.current?.emit("send" , newTask)
     setValue("");

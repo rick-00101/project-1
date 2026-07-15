@@ -6,6 +6,7 @@ export default [
     route("/custom","./routes/cjRoom.tsx"),
     route("/custom/:roomId" , 
         "./routes/custom.tsx"
-    )
+    ),
+   
     
 ] satisfies RouteConfig;
