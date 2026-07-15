@@ -2,12 +2,13 @@ import { Button } from "../components/ui/button";
 import { Field } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { CardSmall } from "./workcomp";
+import axios from 'axios';
 import { useState  ,useEffect} from "react";
 
 type addprop = {
   searchQuery : string
 }
-export function Add( prop : addprop ) {
+export  function Add( prop : addprop ) {
   type Task ={
     id : string
     work : string ,
@@ -16,7 +17,14 @@ export function Add( prop : addprop ) {
   
   const [value, setValue] = useState("");
 
-  const [task, setTask] = useState<Task[]>([]);
+  const [task, setTask] = useState<Task[]>(() => {
+  const saved = localStorage.getItem("tasks");
+  return saved ? JSON.parse(saved) : []; // Pehle hi localstorage check kar liya!
+});;
+
+  
+
+  
   
   
 
@@ -25,6 +33,8 @@ export function Add( prop : addprop ) {
   
   const isEmpty = value.length === 0;
 
+  const filterredTask =task.filter(
+    (t)=> t.work.toLowerCase().includes(prop.searchQuery.toLowerCase()))
     function destroyer( index:number) {
 
       setTask(task.map((task , i)=>
@@ -62,7 +72,7 @@ export function Add( prop : addprop ) {
  
 
 
-  function addtask() {
+  async function addtask() {
 
 
 
@@ -73,13 +83,14 @@ export function Add( prop : addprop ) {
   },]);
     setValue("");
     console.log("Task added:", value);
+
+    
+
+
+    
   }
 
-  useEffect(() => {
-  const saved = localStorage.getItem("tasks");
-  if (saved) setTask(JSON.parse(saved));
-}, []);
-
+ 
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(task));
 }, [task]);
@@ -89,6 +100,7 @@ useEffect(() => {
       <div className="flex flex-col justify-center  items-center h-[] mt-10">
         <Field orientation="horizontal" className="w-1/2  ">
           <Input
+          className=""
             value={value}
             onChange={(e) => setValue(e.target.value) }
             type="search"
@@ -112,11 +124,11 @@ useEffect(() => {
 
         <p className="mt-10 text-4xl text-gray-500">MY daily task</p>
       </div>
-      {task.length>0 && (
+      {filterredTask.length>0 ? (
         <div>
-          {task.map((singletask, index: number) => {
+          {filterredTask.map((singletask, index: number) => {
             return (
-              <div key={index}>
+              <div key={singletask.id}>
                 <CardSmall
                 
                   id ={singletask.id}
@@ -136,6 +148,12 @@ useEffect(() => {
             );
           })}
         </div>
+      ) : 
+      (
+        prop.searchQuery && (
+          <p className="text-center text-gray-400 text-sm mt-10">
+            No tasks match "{prop.searchQuery}" 🔍
+          </p>)
       )}
     </>
   );

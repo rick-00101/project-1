@@ -32,12 +32,12 @@ interface cardprop {
 
 export function CardSmall(prop: cardprop) {
    const [edit , setedit] = useState(false)
-   const [editval , seteditval ] = useState("")
+   const [editval , seteditval ] = useState(prop.work.work)
   return (
     <>
       {
         <div>
-          <Card size="sm" className="mx-auto bg-taupe-400 mt-6 w-full max-w-sm">
+          <Card size="sm" className="mx-auto bg-white/30 mt-6 w-full max-w-sm">
             <CardHeader>
               <CardTitle>Task {prop.index + 1}</CardTitle>
             </CardHeader>

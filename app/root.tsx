@@ -6,7 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import AuthContext from "./routes/authContext";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -24,6 +25,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
   return (
     <html lang="en">
       <head>
@@ -32,8 +34,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="">
+        <GoogleOAuthProvider clientId={clientId}>
+          <AuthContext >{children}</AuthContext>
+        </GoogleOAuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
