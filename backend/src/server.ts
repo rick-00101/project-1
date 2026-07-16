@@ -52,6 +52,10 @@ io.on('connection' , (socket)=>{
     socket.to(data.roomId).emit("recieve",data)
   });
 
+  socket.on('delete_task',({roomId , item_id})=>{
+    socket.to(roomId).emit("delete-task",{item_id})
+  })
+
   socket.on("disconnect" , ()=>{
     console.log("disconnected")
   })

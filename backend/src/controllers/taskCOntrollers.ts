@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
+import { E } from "@upstash/redis/error-8y4qG0W2";
 
 export const addTaskHandler = async (req: Request, res: Response) => {
   try {
@@ -12,7 +13,7 @@ export const addTaskHandler = async (req: Request, res: Response) => {
   // or return res.status(401).json({ error: "Unauthorized" });
 }
 
-    const userTask = await prisma.user_items.create({
+     await prisma.user_items.create({
       
       data: {
         item_id: todoid,
@@ -37,4 +38,58 @@ export const addTaskHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const removeTaskHandler = async () => {};
+export const removeTaskHandler = async (req : Request , res:Response) => {
+try{
+  const item_id = req.body;
+
+  if(!item_id){res.status(404).json({
+    message : "item_id not recieved"
+  })}
+
+  await prisma.user_items.delete({
+    where:{
+      item_id : item_id
+    }
+  })
+
+
+
+}catch(error){
+  res.status(404).json({
+    mesage : error
+  }
+  )
+
+}
+ };
+
+export const presistdata =async (req : Request ,res :Response)=>{
+  try{
+      const roomId = req.params;
+      if(!roomId){
+        res.status(404).json({
+          message : "room id not found"
+        })
+      }
+
+  const existingTask = await prisma.user_items.findMany({
+    where:{
+      roomId : roomId
+    },
+    orderBy:{
+      createdAT : "asc"
+    }
+  })
+
+  return res.status(400).json({
+    data : existingTask
+  })
+
+  }catch(error){
+    res.status(404).json({
+      message:error
+    }
+  )}
+
+
+}
