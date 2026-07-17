@@ -9,6 +9,6 @@ taskrouter.route('/workadd').post(protectRoute,addTaskHandler);
 
 taskrouter.route('/workdelete').post(protectRoute,removeTaskHandler);
 
-taskrouter.route('/presist/:roomId').get( presistdata)
+taskrouter.route('/presist/:roomId').get(presistdata)
 
 export default taskrouter;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
-import { E } from "@upstash/redis/error-8y4qG0W2";
+
 
 export const addTaskHandler = async (req: Request, res: Response) => {
   try {
@@ -40,7 +40,7 @@ export const addTaskHandler = async (req: Request, res: Response) => {
 
 export const removeTaskHandler = async (req : Request , res:Response) => {
 try{
-  const item_id = req.body;
+  const item_id = req.body.item_id;
 
   if(!item_id){res.status(404).json({
     message : "item_id not recieved"
@@ -51,6 +51,11 @@ try{
       item_id : item_id
     }
   })
+
+  return res.status(200).json({
+      success: true,
+      message: "Task successfully deleted from database"
+    });
 
 
 
@@ -65,7 +70,7 @@ try{
 
 export const presistdata =async (req : Request ,res :Response)=>{
   try{
-      const roomId = req.params;
+      const roomId = req.params.roomId as string;
       if(!roomId){
         res.status(404).json({
           message : "room id not found"
@@ -81,13 +86,13 @@ export const presistdata =async (req : Request ,res :Response)=>{
     }
   })
 
-  return res.status(400).json({
+  return res.status(200).json({
     data : existingTask
   })
 
   }catch(error){
     res.status(404).json({
-      message:error
+      message:"error try wala"
     }
   )}
 

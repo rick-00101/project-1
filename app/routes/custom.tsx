@@ -69,12 +69,16 @@ export default function Customroom() {
           `http://localhost:5000/api/task/presist/${roomId}`,
           { withCredentials: true }
         );
+
+        console.log("yaha")
         
-        if (response.data.success) {
-          // Database se aaye saare tasks direct state me push
-          setTask(response.data.data);
-          console.log("✅ Room items state hydro-sync completed.");
-        }
+        if (response.data) {
+        // Agar backend me 'success: true' nahi hai, toh direct data target karo
+        const tasksData = response.data.success ? response.data.data : response.data.data;
+        
+        setTask(tasksData || []);
+        console.log("✅ Room items state hydro-sync completed.");
+      }
       } catch (error) {
         console.error("❌ Failed to pull existing database state on reload:", error);
       }
@@ -110,7 +114,7 @@ export default function Customroom() {
     }
   }
  
-  // ➕ Add New Task
+ 
   async function addTask(value: string) {
     const generatedID = crypto.randomUUID();
 
@@ -179,7 +183,7 @@ export default function Customroom() {
                     >
                       <input
                         type="checkbox"
-                        onClick={() => wipeoff(t.item_id)}
+                        onClick={() =>{ wipeoff(t.item_id) }}
                         className="cursor-pointer"
                       />
                       <span>{t.content}</span>
