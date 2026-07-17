@@ -26,7 +26,7 @@ export default function Topbar(prop: Topprop) {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:5000/api/auth/v1/google/logout", // 👈 URL sahi router wala kar diya
+        url: `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/auth/v1/google/logout`, // 👈 URL sahi router wala kar diya
         withCredentials: true,
       });
 

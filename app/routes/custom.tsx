@@ -24,7 +24,7 @@ export default function Customroom() {
   
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io("http://localhost:5000", {
+      socketRef.current = io(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000", {
         withCredentials: true
       });
     }
@@ -66,7 +66,7 @@ export default function Customroom() {
       try {
         console.log(`🔄 Hydrating tasks from DB for room: ${roomId}`);
         const response = await axios.get(
-          `http://localhost:5000/api/task/presist/${roomId}`,
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/task/presist/${roomId}`,
           { withCredentials: true }
         );
 
@@ -101,7 +101,7 @@ export default function Customroom() {
     // 3. Database Sync Call
     try {
       await axios.post(
-        "http://localhost:5000/api/task/workdelete",
+        `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/task/workdelete`,
         { item_id: itemId ,
           roomId : roomId,
           content : value
@@ -133,7 +133,7 @@ export default function Customroom() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/task/workadd",
+        `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/task/workadd`,
         {
           roomId: roomId,
           todoid: generatedID, // Matches backend req.body mapping

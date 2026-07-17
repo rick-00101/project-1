@@ -15,7 +15,7 @@ const httpserver =createServer(app);
 
 const io = new Server(httpserver , {
   cors : {
-    origin : "http://localhost:5173",
+    origin : process.env.FRONTEND_URL || "http://localhost:5173",
     credentials :true
   }
 })
@@ -23,7 +23,7 @@ const io = new Server(httpserver , {
 
 // Middlewares
 app.use(cors({
-   origin: "http://localhost:5173",
+   origin: process.env.FRONTEND_URL || "http://localhost:5173",
    credentials: true, 
 })); // Isse Frontend bina CORS error ke baat kar payega
 app.use(express.json()); // Isse server JSON data ko samajh payega

@@ -35,10 +35,9 @@ export default function LoginPage() {
 
 
 
-       //ab user ko backend se db mai sync karege and req will be sent to backend 
     const response = await axios({
       method:"post" , 
-      url: 'http://localhost:5000/api/auth/v1/google/login',
+      url: `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/auth/v1/google/login`,
       withCredentials : true,
       data:{
         email : userEmail // yaha googlecredential.credential response ke andar se email decode kar ke nikal kar rakhna hai
