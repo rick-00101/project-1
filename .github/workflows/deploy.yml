@@ -1,0 +1,41 @@
+name: Multi-Environment Deploy
+
+on:
+  push:
+    branches:
+      - main  # Testing Environment
+      - prod  # Consumer Production Environment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      # 🧪 Step A: Deploy to Testing (Sirf jab main branch par push ho)
+      - name: Deploy to Testing S3
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Triggered by 'main' branch"
+          echo "Deploying client folder to: s3://your-testing-bucket-name"
+          # Future Command: aws s3 sync build/client s3://your-testing-bucket-name --delete
+
+      # 🔥 Step B: Deploy to Production (Sirf jab prod branch par push ho)
+      - name: Deploy to Consumer Production S3
+        if: github.ref == 'refs/heads/prod'
+        run: |
+          echo "Triggered by 'prod' branch"
+          echo "Deploying client folder to: s3://to-do-bucker-cashmoneyrick"
+          # Future Command: aws s3 sync build/client s3://to-do-bucker-cashmoneyrick --delete
