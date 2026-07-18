@@ -76,6 +76,7 @@ export default function LoginPage() {
       </CardHeader>
       <CardContent>
         <GoogleLogin 
+        
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleError}
         theme="filled_black"/>

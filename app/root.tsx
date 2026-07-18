@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="">
-        <GoogleOAuthProvider clientId={clientId}>
+        <GoogleOAuthProvider clientId={clientId || "316236519437-k686hvdr8sh72m6m2n9odmciv5m2s08p.apps.googleusercontent.com"}>
           <AuthContext >{children}</AuthContext>
         </GoogleOAuthProvider>
         <ScrollRestoration />
