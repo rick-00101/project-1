@@ -13,9 +13,16 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const httpserver =createServer(app);
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "https://moneylonger.vercel.app",
+  "https://moneylonger.verce.app",
+  "http://localhost:5173"
+].filter(Boolean) as string[];
+
 const io = new Server(httpserver , {
   cors : {
-    origin : process.env.FRONTEND_URL || "http://localhost:5173",
+    origin : allowedOrigins,
     credentials :true
   }
 })
@@ -23,7 +30,7 @@ const io = new Server(httpserver , {
 
 // Middlewares
 app.use(cors({
-   origin: process.env.FRONTEND_URL || "http://localhost:5173",
+   origin: allowedOrigins,
    credentials: true, 
 })); // Isse Frontend bina CORS error ke baat kar payega
 app.use(express.json()); // Isse server JSON data ko samajh payega
