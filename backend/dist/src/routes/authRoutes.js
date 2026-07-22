@@ -2,7 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const authController_1 = require("../controllers/authController");
+const authController_2 = require("../controllers/authController");
+const auth_1 = require("../middleware/auth");
 const router = (0, express_1.Router)();
-router.route("/google").post(authController_1.googleAuthHandler);
-router.route("/logout").post(authController_1.logoutHandler);
+router.route("/v1/google/login").post(authController_1.googleAuthHandler);
+router.route("/v1/google/logout").post(authController_2.logoutHandler);
+router.route("/v1/me").get(auth_1.protectRoute, (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "User is authenticated and persistence checked",
+        user: req.user,
+    });
+});
 exports.default = router;

@@ -31,13 +31,10 @@ export default function LoginPage() {
       const decodedPayload = JSON.parse(atob(payloadBase64));
       const userEmail = decodedPayload.email;
 
-
-
-
-
-    const response = await axios({
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await axios({
       method:"post" , 
-      url: `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/auth/v1/google/login`,
+      url: `${API_BASE}/api/auth/v1/google/login`,
       withCredentials : true,
       data:{
         email : userEmail // yaha googlecredential.credential response ke andar se email decode kar ke nikal kar rakhna hai

@@ -95,6 +95,7 @@ exports.User_detailsScalarFieldEnum = {
 exports.User_itemsScalarFieldEnum = {
     item_id: 'item_id',
     createdAT: 'createdAT',
+    roomId: 'roomId',
     user_id: 'user_id',
     title: 'title',
     content: 'content',
