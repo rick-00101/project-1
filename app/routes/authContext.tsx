@@ -25,9 +25,10 @@ export default function AuthContext({ children }: { children: React.ReactNode })
   useEffect(() => {
     const checkFunction = async () => {
       try {
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
         const response = await axios({
           method: "get",
-          url: `${import.meta.env.VITE_API_BASE_URL}/api/auth/v1/me`,
+          url: `${API_BASE}/api/auth/v1/me`,
           withCredentials: true,
         });
         if (response.data && response.data.user) {
