@@ -3,10 +3,8 @@
     "target": "ES2022",
     "module": "CommonJS",
     "moduleResolution": "node",
+    "rootDir": "./",
     "outDir": "./dist",
-    
-   
-    
     "ignoreDeprecations": "6.0",
     "strict": true,
     "esModuleInterop": true,
@@ -14,11 +12,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-
-    "src/**/*",        // 💡 Tumhara code yahan safe rahega
+    "src/**/*",
     "generated/**/*"
-    
-    
   ]
-   
 }
