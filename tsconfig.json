@@ -3,8 +3,12 @@
     "**/*",
     "**/.server/**/*",
     "**/.client/**/*",
-    ".react-router/types/**/*",
-    
+    ".react-router/types/**/*"
+  ],
+  "exclude": [
+    "backend",
+    "build",
+    "node_modules"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],

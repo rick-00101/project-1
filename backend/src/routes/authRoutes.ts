@@ -1,4 +1,5 @@
-import { Request, Response, Router} from "express";
+import type { Request, Response } from "express";
+import { Router } from "express";
 import { googleAuthHandler } from "../controllers/authController";
 import { logoutHandler } from "../controllers/authController";
 import { protectRoute } from "../middleware/auth";

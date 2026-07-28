@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import {prisma} from "../utils/prisma";
 import crypto from 'crypto';
 import { redisSession } from "../config/redis";

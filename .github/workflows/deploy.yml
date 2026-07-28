@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main  # Testing Environment
+      - master # Default Working Branch
       - prod  # Consumer Production Environment
 
 jobs:
-  deploy:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,18 +25,37 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 🧪 Step A: Deploy to Testing (Sirf jab main branch par push ho)
+      # 🧪 Step A: Deploy to Testing (Triggered by main or master branch)
       - name: Deploy to Testing S3
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
-          echo "Triggered by 'main' branch"
+          echo "Triggered by '${{ github.ref_name }}' branch"
           echo "Deploying client folder to: s3://your-testing-bucket-name"
           # Future Command: aws s3 sync build/client s3://your-testing-bucket-name --delete
 
-      # 🔥 Step B: Deploy to Production (Sirf jab prod branch par push ho)
+      # 🔥 Step B: Deploy to Production (Triggered by prod branch)
       - name: Deploy to Consumer Production S3
         if: github.ref == 'refs/heads/prod'
         run: |
           echo "Triggered by 'prod' branch"
           echo "Deploying client folder to: s3://to-do-bucker-cashmoneyrick"
           # Future Command: aws s3 sync build/client s3://to-do-bucker-cashmoneyrick --delete
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/prod'
+    steps:
+      - name: Deploy Backend to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/app/repo/backend
+            git pull origin master
+            npm ci
+            npx prisma generate
+            npx prisma migrate deploy
+            npm run build
+            pm2 reload backend-api || pm2 start ecosystem.config.js
